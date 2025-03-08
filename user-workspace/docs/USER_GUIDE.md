@@ -5,7 +5,6 @@
 ### Prerequisites
 - Docker and Docker Compose installed on your system
 - API keys for the services you want to use
-- SSL certificate (for secure HTTPS connection)
 
 ### Quick Setup
 
@@ -27,52 +26,63 @@ ANTHROPIC_API_KEY=your-anthropic-key
 DEEPEEK_API_KEY=your-deepseek-key
 ```
 
-3. **Start the application with SSL**
+3. **Start the application**
 ```bash
 docker-compose up -d
 ```
 
-The application will be available at `https://localhost:8000`
+4. **Access the Application**
+- Open `https://localhost:8000` in your browser
+- You may see a security warning about the self-signed certificate
+- Click "Advanced" and proceed to the website
+- You'll see the Work Production AI Agent login page
 
-## Basic Usage
+### Authentication Options
 
-### Authentication
-- Access the application via HTTPS
-- Click "Sign in with Google" or "Sign in with Microsoft"
-- Follow the authentication prompts
-- Once authenticated, you'll be redirected to the dashboard
+1. **Google Sign-In**
+- Click "Sign in with Google"
+- Select your Google account
+- Grant the necessary permissions
 
-### Main Features
+2. **Microsoft Sign-In**
+- Click "Sign in with Microsoft"
+- Enter your Microsoft credentials
+- Grant the necessary permissions
 
-1. **Document Processing**
-   - Upload documents using the upload button
-   - View processed results in the dashboard
+## Features
 
-2. **Email Management**
-   - Connect your email account
-   - Use AI to draft and analyze emails
+### 1. Document Processing
+- Upload and analyze documents
+- Extract key information
+- Generate summaries
 
-3. **Task Automation**
-   - Create and manage tasks
-   - AI-assisted prioritization
+### 2. Email Management
+- AI-assisted email drafting
+- Smart categorization
+- Template management
+
+### 3. Task Automation
+- Create and manage tasks
+- AI-powered prioritization
+- Deadline management
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **SSL Certificate Error?**
-   - Ensure you're using HTTPS
-   - Accept the self-signed certificate in development
-   - For production, use a valid SSL certificate
+1. **Certificate Warning**
+   - This is normal in development
+   - Click "Advanced" > "Proceed to localhost"
+   - For production, use a proper SSL certificate
 
-2. **Can't access the application?**
-   - Verify Docker containers are running: `docker-compose ps`
+2. **Can't Access the Application?**
+   - Ensure Docker containers are running: `docker-compose ps`
    - Check logs: `docker-compose logs`
-   - Ensure you're using HTTPS, not HTTP
+   - Verify you're using HTTPS, not HTTP
 
 ### Need Help?
 - Check the logs: `docker-compose logs`
-- Visit our documentation
+- Review documentation
 - Contact support
 
 ## Stopping the Application
