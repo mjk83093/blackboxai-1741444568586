@@ -32,10 +32,16 @@ docker-compose up -d
 ```
 
 4. **Access the Application**
-- Open `https://localhost:8000` in your browser
+- Open `https://localhost` in your browser
 - You may see a security warning about the self-signed certificate
 - Click "Advanced" and proceed to the website
 - You'll see the Work Production AI Agent login page
+
+### Security Notes
+- The application uses HTTPS for secure communication
+- All traffic is encrypted using SSL/TLS
+- HTTP requests are automatically redirected to HTTPS
+- In production, replace the self-signed certificates with valid SSL certificates
 
 ### Authentication Options
 
@@ -71,20 +77,57 @@ docker-compose up -d
 ### Common Issues
 
 1. **Certificate Warning**
-   - This is normal in development
+   - This is normal in development environment
    - Click "Advanced" > "Proceed to localhost"
-   - For production, use a proper SSL certificate
+   - For production, use a valid SSL certificate
 
 2. **Can't Access the Application?**
    - Ensure Docker containers are running: `docker-compose ps`
    - Check logs: `docker-compose logs`
    - Verify you're using HTTPS, not HTTP
+   - Check if port 443 is available
+
+3. **SSL/HTTPS Issues**
+   - Ensure nginx container is running
+   - Check nginx logs: `docker-compose logs nginx`
+   - Verify SSL certificate paths
+   - Make sure ports 80/443 are not in use
+
+### Container Management
+
+1. **View container status**
+```bash
+docker-compose ps
+```
+
+2. **Check logs**
+```bash
+# All containers
+docker-compose logs
+
+# Specific container
+docker-compose logs nginx
+docker-compose logs api
+```
+
+3. **Restart containers**
+```bash
+docker-compose restart
+```
 
 ### Need Help?
-- Check the logs: `docker-compose logs`
+- Check the container logs
 - Review documentation
 - Contact support
 
 ## Stopping the Application
 ```bash
 docker-compose down
+```
+
+## Production Deployment
+For production deployment:
+1. Replace self-signed certificates with valid SSL certificates
+2. Update domain names in nginx configuration
+3. Configure proper security measures
+4. Set up monitoring and logging
