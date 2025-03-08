@@ -5,6 +5,7 @@
 ### Prerequisites
 - Docker and Docker Compose installed on your system
 - API keys for the services you want to use
+- SSL certificate (for secure HTTPS connection)
 
 ### Quick Setup
 
@@ -26,16 +27,17 @@ ANTHROPIC_API_KEY=your-anthropic-key
 DEEPEEK_API_KEY=your-deepseek-key
 ```
 
-3. **Start the application**
+3. **Start the application with SSL**
 ```bash
 docker-compose up -d
 ```
 
-The application will be available at `http://localhost:8000`
+The application will be available at `https://localhost:8000`
 
 ## Basic Usage
 
 ### Authentication
+- Access the application via HTTPS
 - Click "Sign in with Google" or "Sign in with Microsoft"
 - Follow the authentication prompts
 - Once authenticated, you'll be redirected to the dashboard
@@ -45,31 +47,28 @@ The application will be available at `http://localhost:8000`
 1. **Document Processing**
    - Upload documents using the upload button
    - View processed results in the dashboard
-   - Download or share results as needed
 
 2. **Email Management**
    - Connect your email account
    - Use AI to draft and analyze emails
-   - Manage email templates
 
 3. **Task Automation**
-   - Create new tasks
-   - Let AI help prioritize and organize
-   - Track progress in the dashboard
+   - Create and manage tasks
+   - AI-assisted prioritization
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Can't start the application?**
-   - Ensure Docker is running
-   - Check if ports 8000 is available
-   - Verify your API keys in `.env`
+1. **SSL Certificate Error?**
+   - Ensure you're using HTTPS
+   - Accept the self-signed certificate in development
+   - For production, use a valid SSL certificate
 
-2. **Authentication issues?**
-   - Ensure your API keys are correct
-   - Check your internet connection
-   - Try clearing your browser cache
+2. **Can't access the application?**
+   - Verify Docker containers are running: `docker-compose ps`
+   - Check logs: `docker-compose logs`
+   - Ensure you're using HTTPS, not HTTP
 
 ### Need Help?
 - Check the logs: `docker-compose logs`
