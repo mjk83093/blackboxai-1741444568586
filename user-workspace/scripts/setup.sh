@@ -20,7 +20,7 @@ fi
 # Create virtual environment
 echo "🔧 Creating virtual environment..."
 python3 -m venv venv
-source venv/bin/activate
+source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 
 # Install dependencies
 echo "📦 Installing dependencies..."
@@ -36,25 +36,20 @@ else
     echo "ℹ️ .env file already exists"
 fi
 
-# Initialize database
-echo "🗄️ Setting up database..."
-if command -v docker &> /dev/null; then
-    echo "🐳 Starting PostgreSQL and Redis with Docker..."
-    docker-compose up -d db redis
-    
-    # Wait for PostgreSQL to be ready
-    echo "⏳ Waiting for PostgreSQL to be ready..."
-    until docker-compose exec -T db pg_isready; do
-        echo "PostgreSQL is unavailable - sleeping"
-        sleep 1
-    done
-    
-    echo "✅ Database services are running"
-else
-    echo "⚠️ Docker not found. Please ensure PostgreSQL and Redis are running locally"
-fi
+# Start services with Docker Compose
+echo "🐳 Starting services with Docker Compose..."
+docker-compose up -d
 
-# Create database tables
+# Wait for services to be ready
+echo "⏳ Waiting for PostgreSQL to be ready..."
+until docker-compose exec -T db pg_isready; do
+    echo "PostgreSQL is unavailable - sleeping"
+    sleep 1
+done
+
+echo "✅ Database services are running"
+
+# Initialize the database
 echo "🏗️ Creating database tables..."
 python -c "
 from app.main import app
@@ -77,9 +72,9 @@ echo "📁 Creating necessary directories..."
 mkdir -p logs
 mkdir -p data
 
-# Set up test environment
-echo "🧪 Setting up test environment..."
-python -m pytest --setup-only
+# Run tests
+echo "🧪 Running tests..."
+pytest
 
 echo """
 ✨ Setup completed! ✨
