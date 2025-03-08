@@ -1,7 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, HTMLResponse
-from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from typing import Dict, Optional
 import jwt
@@ -15,10 +14,12 @@ from app.services.document_service import DocumentService
 from app.services.email_service import EmailService
 from app.services.task_service import TaskService
 
-app = FastAPI(title="Work Production AI Agent")
+app = FastAPI(
+    title="Work Production AI Agent",
+    description="AI-powered assistant for document processing, email automation, and task management"
+)
 
-# Static files and templates
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
+# Templates configuration
 templates = Jinja2Templates(directory="app/templates")
 
 # CORS middleware
@@ -35,19 +36,28 @@ microsoft_auth = MicrosoftAuth()
 google_auth = GoogleAuth()
 mcp = ModelContextProtocol()
 
+# Health check endpoint
+@app.get("/health")
+async def health_check():
+    """Health check endpoint for container orchestration"""
+    return {"status": "ok"}
+
 # Root route - serve the login page
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
+    """Serve the main application page"""
     return templates.TemplateResponse("index.html", {"request": request})
 
 # JWT token handling
 def create_access_token(data: dict) -> str:
+    """Create a new JWT access token"""
     to_encode = data.copy()
     expire = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm="HS256")
 
 async def get_current_user(request: Request) -> Dict:
+    """Validate and return the current user from JWT token"""
     token = request.headers.get("Authorization")
     if not token or not token.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Invalid authentication")
@@ -97,8 +107,6 @@ async def google_callback(code: str):
         return {"access_token": access_token}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-
-# [Rest of the routes remain the same...]
 
 if __name__ == "__main__":
     import uvicorn
